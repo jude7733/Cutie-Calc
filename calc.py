@@ -11,6 +11,7 @@ def calresultack(input):
             return True
         else:
             return False
+
 def clear():
     num1.delete(0,END)
     num2.delete(0,END)
