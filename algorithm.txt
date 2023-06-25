@@ -1,0 +1,26 @@
+Take two stacks:
+
+    operator stack { for operators and parentheses }.
+    operand stack.
+
+Algorithm - infix
+
+If character exists to be read:
+
+    If character is operand push on the operand stack,
+    # if character is (, push on the operator stack.
+
+    Else if character is operator
+       1) While the top of the operator stack is not of smaller precedence than this character.
+       2) Pop operator from operator stack.
+       3) Pop two operands (op1 and op2) from operand stack.
+       4) Store op1 op op2 on the operand stack back to 2.1.
+       
+    # Else if character is ), do the same as 2.2 - 2.4 till you encounter (.
+
+Else (no more character left to read):
+
+    Pop operators untill operator stack is not empty.
+    Pop top 2 operands and push op1 op op2 on the operand stack.
+
+return the top value from operand stack.

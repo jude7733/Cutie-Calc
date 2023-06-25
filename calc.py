@@ -14,10 +14,13 @@ def check_char(input):
         return False
 
 def clear():
-    exp.set(value='0')
+    exp.set(value="0")
+    ans.set(value=0)
+    operand_Stack.clear()
+    operator_Stack.clear()
 
 def numbers(num):
-    if exp.get() == '0':
+    if exp.get() == "0":
         temp.set(value=num)
         exp.set(value=str(num))
     else:
@@ -28,27 +31,63 @@ def numbers(num):
             exp.set(value=(str(temp.get())))
 
 def operators(op):
+    def get_Precedence(x):
+        if x == "*" or x == "/":
+            return 3
+        else:
+            return 2
+
+    def calc(a, b, c):
+        if c == "+":
+            return a + b
+        elif c == "-":
+            return a - b
+        elif c == "*":
+            return a * b
+        elif c == "/":
+            if b == 0:
+                return "ಥ_ಥ"
+            return a / b
+
     operand_Stack.append(temp.get())
-    operator_Stack.append(op)
-    exp.set(value=exp.get() + op)
+
+    if operator_Stack:
+        # if greater precedence
+        if get_Precedence(op) > get_Precedence(operator_Stack[-1]):
+            operator_Stack.append(op)
+        else:
+            if get_Precedence(op) <= get_Precedence(operator_Stack[-1]):
+                a = operand_Stack.pop()
+                b = operand_Stack.pop()
+                c = operator_Stack.pop()
+                operand_Stack.append(calc(b, a, c))
+                if op == "=":
+                    ans.set(value=operand_Stack[-1])
+                    operand_Stack.pop()
+                    exp.set(value="0")
+                else:
+                    operator_Stack.append(op)
+    # if empty
+    else:
+        operator_Stack.append(op)
+    if op != "=":
+        exp.set(value=exp.get() + op)
     temp.set(value=0)
+
+    print("operand_Stack")
     print(operand_Stack)
+    print("operator_Stack")
     print(operator_Stack)
 
-def calcresult():
-    result.config(text=exp.get())
-    operand_Stack.append(temp.get())
-    print(operand_Stack)
-    # exp.set(value='')
-    # print(result.configure())
 
 # variables
 operand_Stack = []
 operator_Stack = []
 
 # tkinter variables
-exp = tk.StringVar(value='0')
+exp = tk.StringVar(value="0")
 temp = tk.IntVar(value=0)
+ans = tk.IntVar(value=0)
 
 # tkinter widgets
 entry = ttk.Entry(
@@ -61,7 +100,7 @@ entry = ttk.Entry(
 )
 entry.grid(row=0, column=0, pady=5, sticky="w", columnspan=4)
 
-result = ttk.Label(master=root, font=("arial", 20))
+result = ttk.Label(master=root, font=("arial", 20), textvariable=ans)
 result.grid(row=1, column=2, pady=5, columnspan=4, sticky="e")
 
 clr = ttk.Button(root, text="C", width=7, command=clear)
@@ -88,15 +127,15 @@ nine.grid(row=4, column=2, padx=2, pady=2)
 zero = ttk.Button(root, text="0", width=7, command=lambda: numbers(0))
 zero.grid(row=5, column=1, padx=2, pady=2)
 
-expual = ttk.Button(root, text="=", width=7, command=calcresult)
-expual.grid(row=5, column=2, padx=2, pady=2)
+equal = ttk.Button(root, text="=", width=7, command=lambda: operators("="))
+equal.grid(row=5, column=2, padx=2, pady=2)
 add = ttk.Button(root, text="+", width=7, command=lambda: operators("+"))
 add.grid(row=2, column=3, padx=2, pady=2)
 sub = ttk.Button(root, text="-", width=7, command=lambda: operators("-"))
 sub.grid(row=3, column=3, padx=2, pady=2)
-mul = ttk.Button(root, text="*", width=7, command=lambda: operators("*"))
+mul = ttk.Button(root, text="X", width=7, command=lambda: operators("*"))
 mul.grid(row=4, column=3, padx=2, pady=2)
-div = ttk.Button(root, text="/", width=7, command=lambda: operators("/"))
+div = ttk.Button(root, text="÷", width=7, command=lambda: operators("/"))
 div.grid(row=5, column=3, padx=2, pady=2)
 
 root.mainloop()
