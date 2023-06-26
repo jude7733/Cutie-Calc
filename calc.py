@@ -1,8 +1,8 @@
-import tkinter as tk
-from tkinter import ttk
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 
 # create root window
-root = tk.Tk()
+root = ttk.Window(themename="superhero")
 root.title("Calculator")
 
 
@@ -13,11 +13,13 @@ def check_char(input):
     else:
         return False
 
+
 def clear():
     exp.set(value="0")
-    ans.set(value=0)
+    ans.set(value="(̶◉͛‿◉̶)")
     operand_Stack.clear()
     operator_Stack.clear()
+
 
 def numbers(num):
     if exp.get() == "0":
@@ -29,6 +31,7 @@ def numbers(num):
             exp.set(value=exp.get() + str(num))
         else:
             exp.set(value=(str(temp.get())))
+
 
 def operators(op):
     def get_Precedence(x):
@@ -85,9 +88,9 @@ operand_Stack = []
 operator_Stack = []
 
 # tkinter variables
-exp = tk.StringVar(value="0")
-temp = tk.IntVar(value=0)
-ans = tk.IntVar(value=0)
+exp = ttk.StringVar(value="0")
+temp = ttk.IntVar(value=0)
+ans = ttk.IntVar(value="ʕ•́ᴥ•̀ʔっ")
 
 # tkinter widgets
 entry = ttk.Entry(
@@ -103,7 +106,7 @@ entry.grid(row=0, column=0, pady=5, sticky="w", columnspan=4)
 result = ttk.Label(master=root, font=("arial", 20), textvariable=ans)
 result.grid(row=1, column=2, pady=5, columnspan=4, sticky="e")
 
-clr = ttk.Button(root, text="C", width=7, command=clear)
+clr = ttk.Button(root, text="C", width=7, bootstyle=DANGER, command=clear)
 clr.grid(row=5, column=0, padx=2, pady=2)
 
 one = ttk.Button(root, text="7", width=7, command=lambda: numbers(7))
@@ -127,15 +130,25 @@ nine.grid(row=4, column=2, padx=2, pady=2)
 zero = ttk.Button(root, text="0", width=7, command=lambda: numbers(0))
 zero.grid(row=5, column=1, padx=2, pady=2)
 
-equal = ttk.Button(root, text="=", width=7, command=lambda: operators("="))
+equal = ttk.Button(
+    root, text="=", width=7, bootstyle=SUCCESS, command=lambda: operators("=")
+)
 equal.grid(row=5, column=2, padx=2, pady=2)
-add = ttk.Button(root, text="+", width=7, command=lambda: operators("+"))
+add = ttk.Button(
+    root, text="+", width=7, bootstyle=INFO, command=lambda: operators("+")
+)
 add.grid(row=2, column=3, padx=2, pady=2)
-sub = ttk.Button(root, text="-", width=7, command=lambda: operators("-"))
+sub = ttk.Button(
+    root, text="-", width=7, bootstyle=INFO, command=lambda: operators("-")
+)
 sub.grid(row=3, column=3, padx=2, pady=2)
-mul = ttk.Button(root, text="X", width=7, command=lambda: operators("*"))
+mul = ttk.Button(
+    root, text="X", width=7, bootstyle=INFO, command=lambda: operators("*")
+)
 mul.grid(row=4, column=3, padx=2, pady=2)
-div = ttk.Button(root, text="÷", width=7, command=lambda: operators("/"))
+div = ttk.Button(
+    root, text="÷", width=7, bootstyle=INFO, command=lambda: operators("/")
+)
 div.grid(row=5, column=3, padx=2, pady=2)
 
 root.mainloop()
