@@ -80,10 +80,10 @@ def operators(op):
         exp.set(value=exp.get() + op)
     temp.set(value=0)
 
-    print("operand_Stack")
-    print(operand_Stack)
-    print("operator_Stack")
-    print(operator_Stack)
+    # print("operand_Stack")
+    # print(operand_Stack)
+    # print("operator_Stack")
+    # print(operator_Stack)
 
 
 # variables
@@ -94,6 +94,7 @@ operator_Stack = []
 exp = ttk.StringVar(value="0")
 temp = ttk.IntVar(value=0)
 ans = ttk.IntVar(value="ʕ•́ᴥ•̀ʔっ")
+themeVar = ttk.StringVar(value="superhero")
 
 # tkinter widgets
 entry = ttk.Entry(
@@ -112,6 +113,7 @@ result.grid(row=1, column=0, pady=5, padx=10, columnspan=4, sticky="EW")
 clr = ttk.Button(root, text="C", width=7, bootstyle=DANGER, command=clear)
 clr.grid(row=5, column=0, padx=2, pady=2, sticky="NSEW")
 
+# numbers
 one = ttk.Button(root, text="7", width=7, command=lambda: numbers(7))
 one.grid(row=2, column=0, padx=2, pady=2, sticky="NSEW")
 two = ttk.Button(root, text="8", width=7, command=lambda: numbers(8))
@@ -133,26 +135,39 @@ nine.grid(row=4, column=2, padx=2, pady=2, sticky="NSEW")
 zero = ttk.Button(root, text="0", width=7, command=lambda: numbers(0))
 zero.grid(row=5, column=1, padx=2, pady=2, sticky="NSEW")
 
+# operators
 equal = ttk.Button(
     root, text="=", width=7, bootstyle=SUCCESS, command=lambda: operators("=")
 )
 equal.grid(row=5, column=2, padx=2, pady=2, sticky="NSEW")
 add = ttk.Button(
-    root, text="+", width=7, bootstyle=LIGHT, command=lambda: operators("+")
+    root, text="+", width=7, bootstyle=INFO, command=lambda: operators("+")
 )
 add.grid(row=2, column=3, padx=2, pady=2, sticky="NSEW")
 sub = ttk.Button(
-    root, text="-", width=7, bootstyle=LIGHT, command=lambda: operators("-")
+    root, text="-", width=7, bootstyle=INFO, command=lambda: operators("-")
 )
 sub.grid(row=3, column=3, padx=2, pady=2, sticky="NSEW")
 mul = ttk.Button(
-    root, text="X", width=7, bootstyle=LIGHT, command=lambda: operators("*")
+    root, text="X", width=7, bootstyle=INFO, command=lambda: operators("*")
 )
 mul.grid(row=4, column=3, padx=2, pady=2, sticky="NSEW")
 div = ttk.Button(
-    root, text="÷", width=7, bootstyle=LIGHT, command=lambda: operators("/")
+    root, text="÷", width=7, bootstyle=INFO, command=lambda: operators("/")
 )
 div.grid(row=5, column=3, padx=2, pady=2, sticky="NSEW")
+
+# theme
+theme = ttk.Combobox(
+    root,
+    values=root.style.theme_names(),
+    textvariable=themeVar,
+    state="readonly",
+)
+theme.grid(row=6, column=0, pady=6, columnspan=4)
+
+# events
+theme.bind("<<ComboboxSelected>>", lambda event: root.style.theme_use(themeVar.get()))
 
 root.bind(
     "<KeyPress>",
@@ -160,4 +175,5 @@ root.bind(
     if ((event.char).isdigit())
     else operators(event.char),
 )
+
 root.mainloop()
