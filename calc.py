@@ -3,8 +3,12 @@ from ttkbootstrap.constants import *
 from tkinter import *
 
 # create root window
-root = ttk.Window(themename="superhero")
-root.title("Calculator")
+root = ttk.Window(themename="darkly")
+root.title("Cutie-Calc")
+root.minsize(330, 330)
+
+root.iconphoto(True, PhotoImage(file="Android-Lollipop-Calculator.png"))
+
 Grid.rowconfigure(root, 0, weight=1)
 Grid.columnconfigure(root, 0, weight=1)
 
@@ -94,20 +98,21 @@ operator_Stack = []
 exp = ttk.StringVar(value="0")
 temp = ttk.IntVar(value=0)
 ans = ttk.IntVar(value="ʕ•́ᴥ•̀ʔっ")
-themeVar = ttk.StringVar(value="superhero")
+themeVar = ttk.StringVar(value="darkly")
 
-# tkinter widgets
+# tkinter widgets   
 entry = ttk.Entry(
     master=root,
     font=("arial", 22),
     textvariable=exp,
+    bootstyle=INFO,
     justify="right",
     validate="key",
     validatecommand=(root.register(check_char), "%P"),
 )
 entry.grid(row=0, column=0, padx=5, columnspan=4, sticky="EW")
 
-result = ttk.Label(master=root, font=("arial", 20), textvariable=ans)
+result = ttk.Label(master=root, font=("arial", 20), textvariable=ans, bootstyle=LIGHT)
 result.grid(row=1, column=0, pady=5, padx=10, columnspan=4, sticky="EW")
 
 clr = ttk.Button(root, text="C", width=7, bootstyle=DANGER, command=clear)
@@ -136,24 +141,35 @@ zero = ttk.Button(root, text="0", width=7, command=lambda: numbers(0))
 zero.grid(row=5, column=1, padx=2, pady=2, sticky="NSEW")
 
 # operators
+op_style = ttk.Style()
+op_style.configure("INFO.TButton", font=("arial", 28))
 equal = ttk.Button(
-    root, text="=", width=7, bootstyle=SUCCESS, command=lambda: operators("=")
+    root,
+    text="=",
+    width=7,
+    bootstyle=INFO,
+    style="INFO.Tbutton",
+    command=lambda: operators("="),
 )
 equal.grid(row=5, column=2, padx=2, pady=2, sticky="NSEW")
+
 add = ttk.Button(
-    root, text="+", width=7, bootstyle=INFO, command=lambda: operators("+")
+    root, text="＋", width=7, bootstyle=SECONDARY, command=lambda: operators("+")
 )
 add.grid(row=2, column=3, padx=2, pady=2, sticky="NSEW")
+
 sub = ttk.Button(
-    root, text="-", width=7, bootstyle=INFO, command=lambda: operators("-")
+    root, text="—", width=7, bootstyle=SECONDARY, command=lambda: operators("-")
 )
 sub.grid(row=3, column=3, padx=2, pady=2, sticky="NSEW")
+
 mul = ttk.Button(
-    root, text="X", width=7, bootstyle=INFO, command=lambda: operators("*")
+    root, text="X", width=7, bootstyle=SECONDARY, command=lambda: operators("*")
 )
 mul.grid(row=4, column=3, padx=2, pady=2, sticky="NSEW")
+
 div = ttk.Button(
-    root, text="÷", width=7, bootstyle=INFO, command=lambda: operators("/")
+    root, text="/", width=7, bootstyle=SECONDARY, command=lambda: operators("/")
 )
 div.grid(row=5, column=3, padx=2, pady=2, sticky="NSEW")
 
@@ -163,8 +179,10 @@ theme = ttk.Combobox(
     values=root.style.theme_names(),
     textvariable=themeVar,
     state="readonly",
+    width=10,
+    bootstyle=INFO,
 )
-theme.grid(row=6, column=0, pady=6, columnspan=4)
+theme.grid(row=6, column=0, pady=10, columnspan=2, sticky="EW")
 
 # events
 theme.bind("<<ComboboxSelected>>", lambda event: root.style.theme_use(themeVar.get()))
