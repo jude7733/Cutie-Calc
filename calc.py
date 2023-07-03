@@ -5,12 +5,16 @@ from tkinter import *
 # create root window
 root = ttk.Window(themename="darkly")
 root.title("Cutie-Calc")
-root.minsize(330, 330)
+root.minsize(200, 300)
 
 root.iconphoto(True, PhotoImage(file="Android-Lollipop-Calculator.png"))
+# transparent window
+# root.attributes("-alpha", 0.99)
 
-Grid.rowconfigure(root, 0, weight=1)
-Grid.columnconfigure(root, 0, weight=1)
+# hide titlebar and add resize grip
+# root.overrideredirect(True)
+grip = ttk.Sizegrip(root)
+grip.place(relx=1.0, rely=1.0, anchor="se")
 
 
 # for preventing alphabet entry
@@ -83,7 +87,6 @@ def operators(op):
     if op != "=":
         exp.set(value=exp.get() + op)
     temp.set(value=0)
-
     # print("operand_Stack")
     # print(operand_Stack)
     # print("operator_Stack")
@@ -94,13 +97,27 @@ def operators(op):
 operand_Stack = []
 operator_Stack = []
 
+# grid config
+Grid.rowconfigure(root, 0, weight=2)
+Grid.rowconfigure(root, 1, weight=1)
+Grid.rowconfigure(root, 2, weight=1)
+Grid.rowconfigure(root, 3, weight=1)
+Grid.rowconfigure(root, 4, weight=1)
+Grid.rowconfigure(root, 5, weight=1)
+Grid.rowconfigure(root, 6, weight=1)
+
+Grid.columnconfigure(root, 0, weight=1)
+Grid.columnconfigure(root, 1, weight=1)
+Grid.columnconfigure(root, 2, weight=1)
+Grid.columnconfigure(root, 3, weight=1)
+
 # tkinter variables
 exp = ttk.StringVar(value="0")
 temp = ttk.IntVar(value=0)
 ans = ttk.IntVar(value="ʕ•́ᴥ•̀ʔっ")
 themeVar = ttk.StringVar(value="darkly")
 
-# tkinter widgets   
+# tkinter widgets
 entry = ttk.Entry(
     master=root,
     font=("arial", 22),
@@ -113,7 +130,7 @@ entry = ttk.Entry(
 entry.grid(row=0, column=0, padx=5, columnspan=4, sticky="EW")
 
 result = ttk.Label(master=root, font=("arial", 20), textvariable=ans, bootstyle=LIGHT)
-result.grid(row=1, column=0, pady=5, padx=10, columnspan=4, sticky="EW")
+result.grid(row=1, column=0, pady=2, padx=10, columnspan=4, sticky="EW")
 
 clr = ttk.Button(root, text="C", width=7, bootstyle=DANGER, command=clear)
 clr.grid(row=5, column=0, padx=2, pady=2, sticky="NSEW")
@@ -145,7 +162,7 @@ op_style = ttk.Style()
 op_style.configure("INFO.TButton", font=("arial", 28))
 equal = ttk.Button(
     root,
-    text="=",
+    text="＝",
     width=7,
     bootstyle=INFO,
     style="INFO.Tbutton",
@@ -164,12 +181,12 @@ sub = ttk.Button(
 sub.grid(row=3, column=3, padx=2, pady=2, sticky="NSEW")
 
 mul = ttk.Button(
-    root, text="X", width=7, bootstyle=SECONDARY, command=lambda: operators("*")
+    root, text="✕", width=7, bootstyle=SECONDARY, command=lambda: operators("*")
 )
 mul.grid(row=4, column=3, padx=2, pady=2, sticky="NSEW")
 
 div = ttk.Button(
-    root, text="/", width=7, bootstyle=SECONDARY, command=lambda: operators("/")
+    root, text="〳", width=7, bootstyle=SECONDARY, command=lambda: operators("/")
 )
 div.grid(row=5, column=3, padx=2, pady=2, sticky="NSEW")
 
@@ -193,5 +210,7 @@ root.bind(
     if ((event.char).isdigit())
     else operators(event.char),
 )
+# root.bind("<BackSpace>", lambda event: operators("⌫"))
+root.bind("<Escape>", lambda event: root.quit())
 
 root.mainloop()
